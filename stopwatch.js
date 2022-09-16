@@ -50,7 +50,7 @@ function calculateLap () {
         watchStatus = "off"; 
         resetButton.innerHTML = "Reset"; 
         startButton.innerHTML = "Start"  
-        clearInterval(myInterval)
+        clearInterval(myInterval) 
     }
  } 
 

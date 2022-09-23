@@ -23,6 +23,7 @@ const resetTime = () => {
   lapsArray = [];
   lapTable.innerText = "";
   resetButton.innerText = "Lap";
+  lapTimeDiv.innerText = ''
 };
 
 const padNumber = (time) => {
@@ -32,7 +33,7 @@ const padNumber = (time) => {
 //increment function
 
 const stopwatch = () => {
-  time.innerText = finalTime;
+  time.innerText = formatTime(milliseconds);
   const lapNumber = lapsArray.length;
   lapTimeDiv.innerText = ` Lap ${lapNumber + 1} is ${formatTime(lapTime)}`;
 
@@ -109,7 +110,8 @@ const formatTime = (time) => {
   return finalTime;
 };
 
-const findFastestandSlowestLaps = ([allLaps]) => {
+const findFastestandSlowestLaps = () => {
+
   //finds slowest and fastest laps in array
   //add colour to those laps
 };

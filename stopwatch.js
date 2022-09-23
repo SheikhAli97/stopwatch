@@ -2,21 +2,39 @@ const time = document.getElementById("timer");
 const startButton = document.getElementById("start");
 const resetButton = document.getElementById("reset");
 const lapTimeDiv = document.getElementById("lapTimes");
-const lapTable = document.getElementById('laps-table')
+const lapTable = document.getElementById("laps-table");
 
 let milliseconds = 0;
-let watchStatus = "off";
-let totalElapsedTime = 0;
+let watchStatus = "off"; //can have on and off status.
 let lapTime = 0;
 let lapsArray = [];
-let lapRowContent = "";
-let lapNumber = 0;
+let finalTime = 0;
+
+//console.log(formattedTime[0]);
+
+const resetTime = () => {
+  milliseconds = 0;
+  watchStatus = "off";
+  clearInterval(myInterval);
+  time.innerText = formatTime(milliseconds);
+  lapTime = 0;
+  lapTimeDiv.innerText = formatTime(lapTime);
+
+  lapsArray = [];
+  lapTable.innerText = "";
+  resetButton.innerText = "Lap";
+};
+
+const padNumber = (time) => {
+  return time.toString().padStart(2, "0");
+};
 
 //increment function
 
 const stopwatch = () => {
-  time.innerText = formatTime(milliseconds);
-  lapTimeDiv.innerText = ` Lap ${lapNumber + 1} is ${formatTime(lapTime)}`
+  time.innerText = finalTime;
+  const lapNumber = lapsArray.length;
+  lapTimeDiv.innerText = ` Lap ${lapNumber + 1} is ${formatTime(lapTime)}`;
 
   milliseconds++;
   lapTime++;
@@ -24,25 +42,18 @@ const stopwatch = () => {
 
 const calculateLap = () => {
   //add laptime to div
+
   lapsArray.push(lapTime);
+  const lapNumber = lapsArray.length;
 
-  for (let i = 0; i < lapsArray.length; i++) {
-    lapNumber = i + 1;
-  }
- 
+  //get table and insert content
 
-lapRowContent = `Lap ${lapNumber}:  ${formatTime(lapTime)}`; 
-//get table and insert content
-
-const row = lapTable.insertRow(0); 
-const cell = row.insertCell(0); 
-cell.innerHTML = lapRowContent;
-
-
+  const row = lapTable.insertRow(0);
+  const cell = row.insertCell(0);
+  cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
 
   lapTime = 0;
 };
-
 
 //write function that loops through lap times and returns new array with the differences
 
@@ -65,33 +76,16 @@ const startTime = () => {
 
 document.getElementById("start").addEventListener("click", startTime);
 
-const resetTime = () =>{
-    milliseconds = 0;
-
-    watchStatus = "off";
-    clearInterval(myInterval);
-    time.innerText = formatTime(milliseconds);
-    
-    totalElapsedTime = 0;
-    lapTime = 0;
-    lapTimeDiv.innerText = formatTime(lapTime);
-    lapNumber = 0;
-    lapsArray = [];
-    lapTable.innerText = '';
-    resetButton.innerText = 'Lap'  
-}
-
 //when reset is pressed, reset the timer to the default value
 const resetTimeLapToggle = () => {
   if (resetButton.innerText === "Reset") {
-  resetTime();
-    
-  } else if (resetButton.innerText === "Lap" && (milliseconds > 0)) {
+    //rethink this
+    resetTime();
+  } else if (resetButton.innerText === "Lap" && milliseconds > 0) {
     calculateLap(milliseconds);
   }
 };
 resetButton.addEventListener("click", resetTimeLapToggle);
-("");
 
 const formatTime = (time) => {
   let formattedMilliseconds = 0;
@@ -105,13 +99,17 @@ const formatTime = (time) => {
   formattedSeconds = formattedSeconds % 60;
   formattedMinutes = formattedMinutes % 60;
 
-//   const padNumber =  (timeInCentiseconds) => { 
-//     Math.floor(timeInCentiseconds).toString().padStart(2, '0')
-// }
-
-
-
-  return `${formattedMinutes} : ${formattedSeconds} : ${formattedMilliseconds}`;
+  //timesArray = [];
+  formattedTime = [
+    formattedMinutes,
+    formattedSeconds,
+    formattedMilliseconds,
+  ].map(padNumber);
+  finalTime = `${formattedTime[0]}:${formattedTime[1]}.${formattedTime[2]}`;
+  return finalTime;
 };
 
-
+const findFastestandSlowestLaps = ([allLaps]) => {
+  //finds slowest and fastest laps in array
+  //add colour to those laps
+};

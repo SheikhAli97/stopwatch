@@ -1,111 +1,117 @@
-const time = document.getElementById("timer"); 
-const startButton = document.getElementById('start'); 
-const resetButton = document.getElementById('reset');
+const time = document.getElementById("timer");
+const startButton = document.getElementById("start");
+const resetButton = document.getElementById("reset");
+const lapTimeDiv = document.getElementById("lapTimes");
+const lapTable = document.getElementById('laps-table')
 
+let milliseconds = 0;
+let watchStatus = "off";
+let totalElapsedTime = 0;
+let lapTime = 0;
+let lapsArray = [];
+let lapRowContent = "";
+let lapNumber = 0;
 
-let milliseconds = 0; 
-let watchStatus = "off"; 
+//increment function
 
+const stopwatch = () => {
+  time.innerText = formatTime(milliseconds);
+  lapTimeDiv.innerText = ` Lap ${lapNumber + 1} is ${formatTime(lapTime)}`
 
-
-//increment function 
-
-const stopwatch = () => {  
- time.innerHTML =  formatTime(milliseconds);
-// console.log(milliseconds)
-; 
-milliseconds++;
-    
-
-}
+  milliseconds++;
+  lapTime++;
+};
 
 const calculateLap = () => {
-    console.log("lap Calculated")
-}
+  //add laptime to div
+  lapsArray.push(lapTime);
 
-
-
-
- //execute function when start button is pressed. 
- const startTime = () => {
-     if (watchStatus === "off") { 
-        myInterval = window.setInterval(stopwatch, 10);
-        watchStatus = "on"; 
-        
-        resetButton.innerHTML = "Lap"; 
-        startButton.innerHTML = "Stop"
-     } else if (watchStatus === "on") {
-
-        //window.clearInterval(stopwatch);
-        watchStatus = "off"; 
-        resetButton.innerHTML = "Reset"; 
-        startButton.innerHTML = "Start"  
-        clearInterval(myInterval) 
-    }
- } 
-
- document.getElementById("start").addEventListener("click", startTime);
+  for (let i = 0; i < lapsArray.length; i++) {
+    lapNumber = i + 1;
+  }
  
 
- //when reset is pressed, reset the timer to the default value 
-const resetTimeLapToggle = () => {
-    if (resetButton.innerHTML === "Reset") { 
-        milliseconds = 0; 
+lapRowContent = `Lap ${lapNumber}:  ${formatTime(lapTime)}`; 
+//get table and insert content
+
+const row = lapTable.insertRow(0); 
+const cell = row.insertCell(0); 
+cell.innerHTML = lapRowContent;
+
+
+
+  lapTime = 0;
+};
+
+
+//write function that loops through lap times and returns new array with the differences
+
+//execute function when start button is pressed.
+const startTime = () => {
+  if (watchStatus === "off") {
+    myInterval = window.setInterval(stopwatch, 10);
+    watchStatus = "on";
+
+    resetButton.innerText = "Lap"; //use inner text
+    startButton.innerText = "Stop";
+  } else if (watchStatus === "on") {
+    //window.clearInterval(stopwatch);
+    watchStatus = "off";
+    resetButton.innerText = "Reset";
+    startButton.innerText = "Start";
+    clearInterval(myInterval);
+  }
+};
+
+document.getElementById("start").addEventListener("click", startTime);
+
+const resetTime = () =>{
+    milliseconds = 0;
+
+    watchStatus = "off";
+    clearInterval(myInterval);
+    time.innerText = formatTime(milliseconds);
     
-        watchStatus = "off"
-        clearInterval(myInterval) 
-        time.innerHTML = milliseconds //use backticks
-        console.log("pressed reset")
-        
-    } else {
-        console.log("calculated Lap")
-    }
-       
-    
+    totalElapsedTime = 0;
+    lapTime = 0;
+    lapTimeDiv.innerText = formatTime(lapTime);
+    lapNumber = 0;
+    lapsArray = [];
+    lapTable.innerText = '';
+    resetButton.innerText = 'Lap'  
 }
-resetButton.addEventListener('click', resetTimeLapToggle)
-''
 
-const formatTime = (time) =>{ 
-
-    let formattedMilliseconds = 0;
-    let formattedSeconds = 0; 
-    let formattedMinutes = 0; 
+//when reset is pressed, reset the timer to the default value
+const resetTimeLapToggle = () => {
+  if (resetButton.innerText === "Reset") {
+  resetTime();
     
-        
+  } else if (resetButton.innerText === "Lap" && (milliseconds > 0)) {
+    calculateLap(milliseconds);
+  }
+};
+resetButton.addEventListener("click", resetTimeLapToggle);
+("");
 
-    formattedMilliseconds = time % 100; 
-    formattedSeconds = Math.floor(time/100);
-    formattedMinutes= Math.floor((formattedSeconds/60)) 
+const formatTime = (time) => {
+  let formattedMilliseconds = 0;
+  let formattedSeconds = 0;
+  let formattedMinutes = 0;
 
+  formattedMilliseconds = time % 100;
+  formattedSeconds = Math.floor(time / 100);
+  formattedMinutes = Math.floor(formattedSeconds / 60);
 
-    formattedSeconds = formattedSeconds % 60; 
-    formattedMinutes = formattedMinutes % 60;
+  formattedSeconds = formattedSeconds % 60;
+  formattedMinutes = formattedMinutes % 60;
 
-   
-
-
-    return `${formattedMinutes} : ${ formattedSeconds} : ${formattedMilliseconds}`
-
-  
-    
-    } 
-
-
-
-
-//if lap is pressed, execute lap calculation
-
+//   const padNumber =  (timeInCentiseconds) => { 
+//     Math.floor(timeInCentiseconds).toString().padStart(2, '0')
+// }
 
 
 
-
-
-
-
-
-
-
-
+  return `${formattedMinutes} : ${formattedSeconds} : ${formattedMilliseconds}`;
+};
 
 

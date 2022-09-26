@@ -3,12 +3,18 @@ const startButton = document.getElementById("start");
 const resetButton = document.getElementById("reset");
 const lapTimeDiv = document.getElementById("lapTimes");
 const lapTable = document.getElementById("laps-table");
+const tableRows = document.getElementsByTagName("table")[0].rows;
 
 let milliseconds = 0;
 let watchStatus = "off"; //can have on and off status.
 let lapTime = 0;
 let lapsArray = [];
 let finalTime = 0;
+let fastestLapIndex = 0;
+let slowestLapIndex = 0;
+
+let slowestLap = -1;
+let fastestLap = Infinity;
 
 //console.log(formattedTime[0]);
 
@@ -23,7 +29,9 @@ const resetTime = () => {
   lapsArray = [];
   lapTable.innerText = "";
   resetButton.innerText = "Lap";
-  lapTimeDiv.innerText = ''
+  lapTimeDiv.innerText = "";
+  slowestLap = -1;
+  fastestLap = Infinity;
 };
 
 const padNumber = (time) => {
@@ -35,7 +43,7 @@ const padNumber = (time) => {
 const stopwatch = () => {
   time.innerText = formatTime(milliseconds);
   const lapNumber = lapsArray.length;
-  lapTimeDiv.innerText = ` Lap ${lapNumber + 1} is ${formatTime(lapTime)}`;
+  lapTimeDiv.innerText = ` Lap ${lapNumber + 1}: ${formatTime(lapTime)}`;
 
   milliseconds++;
   lapTime++;
@@ -43,15 +51,51 @@ const stopwatch = () => {
 
 const calculateLap = () => {
   //add laptime to div
-
   lapsArray.push(lapTime);
   const lapNumber = lapsArray.length;
 
-  //get table and insert content
+  
+  if (lapsArray.length === 2) { 
+    const row = lapTable.insertRow(0);
+    const cell = row.insertCell(0); 
+    cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+    
 
-  const row = lapTable.insertRow(0);
-  const cell = row.insertCell(0);
-  cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+    if (lapsArray[0] > lapsArray[1]) {
+      tableRows[0].classList.add("slowest-lap");
+      tableRows[1].classList.add("fastest-lap");
+
+      slowestLap = lapsArray[0];
+      fastestLap = lapsArray[1];
+    } else {
+        tableRows[0].classList.add("fastest-lap");
+        tableRows[1].classList.add("slowest-lap");
+
+      slowestLap = lapsArray[1];
+      fastestLap = lapsArray[0];
+    }
+  } else {
+    if (lapTime > slowestLap && lapsArray.length > 2) {
+      slowestLap = lapTime;
+      const row = lapTable.insertRow(0);
+      const cell = row.insertCell(0);
+      row.classList.add("slowest-lap");
+      cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+    } else if (lapTime < fastestLap && lapsArray.length > 1) {
+      fastestLap = lapTime;
+
+      const row = lapTable.insertRow(0);
+      const cell = row.insertCell(0);
+      row.classList.add("fastest-lap");
+      cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+    } else {
+      const row = lapTable.insertRow(0);
+      const cell = row.insertCell(0);
+      cell.innerHTML = ` Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+    }
+  }
+
+  //get table and insert content
 
   lapTime = 0;
 };
@@ -108,10 +152,4 @@ const formatTime = (time) => {
   ].map(padNumber);
   finalTime = `${formattedTime[0]}:${formattedTime[1]}.${formattedTime[2]}`;
   return finalTime;
-};
-
-const findFastestandSlowestLaps = () => {
-
-  //finds slowest and fastest laps in array
-  //add colour to those laps
 };

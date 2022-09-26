@@ -54,12 +54,11 @@ const calculateLap = () => {
   lapsArray.push(lapTime);
   const lapNumber = lapsArray.length;
 
-  
-  if (lapsArray.length === 2) { 
+
+  if (lapsArray.length === 2) {
     const row = lapTable.insertRow(0);
-    const cell = row.insertCell(0); 
+    const cell = row.insertCell(0);
     cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
-    
 
     if (lapsArray[0] > lapsArray[1]) {
       tableRows[0].classList.add("slowest-lap");
@@ -68,43 +67,43 @@ const calculateLap = () => {
       slowestLap = lapsArray[0];
       fastestLap = lapsArray[1];
     } else {
-        tableRows[0].classList.add("fastest-lap");
-        tableRows[1].classList.add("slowest-lap");
+      tableRows[0].classList.add("fastest-lap");
+      tableRows[1].classList.add("slowest-lap");
 
       slowestLap = lapsArray[1];
       fastestLap = lapsArray[0];
     }
   } else {
     if (lapTime > slowestLap && lapsArray.length > 2) {
-        removePreviousSlowestLap();
+      removePreviousSlowestLap();
       slowestLap = lapTime;
       const row = lapTable.insertRow(0);
       const cell = row.insertCell(0);
-    
+
       row.classList.add("slowest-lap");
       cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+     
     } else if (lapTime < fastestLap && lapsArray.length > 1) {
-      //find previous fastest lap. Remove class  
+      //find previous fastest lap. Remove class
       fastestLap = lapTime;
-      
-    removePreviousFastestLap();
+
+      removePreviousFastestLap();
       const row = lapTable.insertRow(0);
       const cell = row.insertCell(0);
       row.classList.add("fastest-lap");
       cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+     
     } else {
       const row = lapTable.insertRow(0);
       const cell = row.insertCell(0);
-      cell.innerHTML = ` Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+      cell.innerHTML = ` Lap ${lapNumber}:  ${formatTime(lapTime)}`; 
+      
+      
     }
   }
 
-  //get table and insert content
-
   lapTime = 0;
 };
-
-//write function that loops through lap times and returns new array with the differences
 
 //execute function when start button is pressed.
 const startTime = () => {
@@ -159,12 +158,11 @@ const formatTime = (time) => {
 };
 
 const removePreviousSlowestLap = () => {
-    let slowestLaps = document.getElementsByClassName('slowest-lap'); 
-    slowestLaps[0].classList.remove('slowest-lap')
-}
+  let slowestLaps = document.getElementsByClassName("slowest-lap");
+  slowestLaps[0].classList.remove("slowest-lap");
+};
 
 const removePreviousFastestLap = () => {
-    let fastestLaps = document.getElementsByClassName('fastest-lap') 
-        fastestLaps[0].classList.remove('fastest-lap')
-    
-}
+  let fastestLaps = document.getElementsByClassName("fastest-lap");
+  fastestLaps[0].classList.remove("fastest-lap");
+};

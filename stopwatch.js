@@ -76,14 +76,18 @@ const calculateLap = () => {
     }
   } else {
     if (lapTime > slowestLap && lapsArray.length > 2) {
+        removePreviousSlowestLap();
       slowestLap = lapTime;
       const row = lapTable.insertRow(0);
       const cell = row.insertCell(0);
+    
       row.classList.add("slowest-lap");
       cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
     } else if (lapTime < fastestLap && lapsArray.length > 1) {
+      //find previous fastest lap. Remove class  
       fastestLap = lapTime;
-
+      
+    removePreviousFastestLap();
       const row = lapTable.insertRow(0);
       const cell = row.insertCell(0);
       row.classList.add("fastest-lap");
@@ -153,3 +157,14 @@ const formatTime = (time) => {
   finalTime = `${formattedTime[0]}:${formattedTime[1]}.${formattedTime[2]}`;
   return finalTime;
 };
+
+const removePreviousSlowestLap = () => {
+    let slowestLaps = document.getElementsByClassName('slowest-lap'); 
+    slowestLaps[0].classList.remove('slowest-lap')
+}
+
+const removePreviousFastestLap = () => {
+    let fastestLaps = document.getElementsByClassName('fastest-lap') 
+        fastestLaps[0].classList.remove('fastest-lap')
+    
+}

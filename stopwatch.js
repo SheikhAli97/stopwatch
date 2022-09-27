@@ -59,8 +59,10 @@ const calculateLap = () => {
 
   if (lapsArray.length === 2) {
     const row = lapTable.insertRow(0);
-    const cell = row.insertCell(0);
-    cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+    const firstCell = row.insertCell(0);
+    const secondCell = row.insertCell(1);
+    firstCell.innerHTML = `Lap ${lapNumber}:`;
+    secondCell.innerHTML = `${formatTime(lapTime)}`
 
     if (lapsArray[0] > lapsArray[1]) {
       tableRows[0].classList.add("fastest-lap");
@@ -80,26 +82,32 @@ const calculateLap = () => {
       removePreviousSlowestLap();
       slowestLap = lapTime;
       const row = lapTable.insertRow(0);
-      const cell = row.insertCell(0);
+      const firstCell = row.insertCell(0);
+      const secondCell = row.insertCell(1);
+      row.classList.add('slowest-lap')
+      firstCell.innerHTML = `Lap ${lapNumber}:`;
+      secondCell.innerHTML = `${formatTime(lapTime)}`
 
-      row.classList.add("slowest-lap");
-      cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
      
-    } else if (lapTime < fastestLap && lapsArray.length > 1) {
-      //find previous fastest lap. Remove class
-      fastestLap = lapTime;
+    } else if (lapTime < fastestLap && lapsArray.length > 2) {
 
       removePreviousFastestLap();
+      fastestLap = lapTime;
       const row = lapTable.insertRow(0);
-      const cell = row.insertCell(0);
-      row.classList.add("fastest-lap");
-      cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
+      const firstCell = row.insertCell(0);
+      const secondCell = row.insertCell(1);
+      row.classList.add('fastest-lap')
+      firstCell.innerHTML = `Lap ${lapNumber}:`;
+      secondCell.innerHTML = `${formatTime(lapTime)}`
+
      
     } else {
+
       const row = lapTable.insertRow(0);
-      const cell = row.insertCell(0);
-      cell.innerHTML = ` Lap ${lapNumber}:  ${formatTime(lapTime)}`; 
-      
+      const firstCell = row.insertCell(0);
+      const secondCell = row.insertCell(1);
+      firstCell.innerHTML = `Lap ${lapNumber}:`;
+      secondCell.innerHTML = `${formatTime(lapTime)}`
       
     }
   }

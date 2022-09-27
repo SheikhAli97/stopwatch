@@ -5,6 +5,8 @@ const lapTimeDiv = document.getElementById("lapTimes");
 const lapTable = document.getElementById("laps-table");
 const tableRows = document.getElementsByTagName("table")[0].rows;
 
+
+
 let milliseconds = 0;
 let watchStatus = "off"; //can have on and off status.
 let lapTime = 0;
@@ -61,14 +63,14 @@ const calculateLap = () => {
     cell.innerHTML = `Lap ${lapNumber}:  ${formatTime(lapTime)}`;
 
     if (lapsArray[0] > lapsArray[1]) {
-      tableRows[0].classList.add("slowest-lap");
-      tableRows[1].classList.add("fastest-lap");
+      tableRows[0].classList.add("fastest-lap");
+      tableRows[1].classList.add("slowest-lap");
 
       slowestLap = lapsArray[0];
       fastestLap = lapsArray[1];
     } else {
-      tableRows[0].classList.add("fastest-lap");
-      tableRows[1].classList.add("slowest-lap");
+      tableRows[0].classList.add("slowest-lap");
+      tableRows[1].classList.add("fastest-lap");
 
       slowestLap = lapsArray[1];
       fastestLap = lapsArray[0];

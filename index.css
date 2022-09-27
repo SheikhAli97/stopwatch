@@ -1,13 +1,22 @@
+
+* {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    padding: 0; 
+    margin: 0; 
+    box-sizing: border-box;
+}
+
+
+
+
 .main{
     height: 812px; 
     width: 375px; 
     background-color:rgb(0, 0, 0);
 }
 
-.timer{
-    color: aliceblue; 
-    font-family: Arial, Helvetica, sans-serif;
-}
+
 
 .fastest-lap{
     color: green
@@ -15,4 +24,37 @@
 
 .slowest-lap{
     color: red
+}
+
+.lap-table{
+    color: aliceblue; 
+    color: aliceblue; 
+
+}
+.button-container { 
+    display: flex; 
+    justify-content: space-evenly;
+    padding-top: 20%;
+    
+}
+
+
+.main-timer{
+display: flex;
+justify-content: center;
+padding: 25% ;
+font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+
+font-size: 2cm;
+color: aliceblue;
+}
+
+.lap-times{
+border-top: 2cm, white;
+font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+font-weight: 300; 
+color: aliceblue; 
+display: flex; 
+justify-content: center;
+
 }

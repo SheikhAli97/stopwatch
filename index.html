@@ -6,23 +6,27 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div class="wrapper">
     <div class="main">
         <div id="timer" class="main-timer"> 
             00:00.00
         </div>
         <div class="button-container"> 
-            <button id="reset" class="button">Lap</button> 
-            <button id="start" class="button">Start</button>
+           <div class="button-wrapper"><button id="reset" class="lap-button" >Lap</button> </div>
+            <div class="button-wrapper"><button id="start" class="start-button">Start</button> </div>
         </div> 
-       
-    <div id= "lapTimes" class="lap-times"> 
+        
+   
+        <table id ="laps-table" class="lap-table">
+        
+        </table> 
+        
+
     </div>
 
-    <table id ="laps-table" class="lap-times">
-            
-    </table> 
 
-  
+
+</div>
 </body> 
 
 <script src="stopwatch.js"></script>

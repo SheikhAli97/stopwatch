@@ -1,11 +1,9 @@
 const time = document.getElementById("timer");
 const startButton = document.getElementById("start");
 const resetButton = document.getElementById("reset");
-const lapTimeDiv = document.getElementById("lapTimes");
 const lapTable = document.getElementById("laps-table");
 const tableRows = document.getElementsByTagName("table")[0].rows;
-
-
+const runningTimer = document.getElementById("running-timer");
 
 let milliseconds = 0;
 let watchStatus = "off"; //can have on and off status.
@@ -14,24 +12,22 @@ let lapsArray = [];
 let finalTime = 0;
 let fastestLapIndex = 0;
 let slowestLapIndex = 0;
+let lapNumber = lapsArray.length + 1;
 
 let slowestLap = -1;
 let fastestLap = Infinity;
-
-//console.log(formattedTime[0]);
 
 const resetTime = () => {
   milliseconds = 0;
   watchStatus = "off";
   clearInterval(myInterval);
-  time.innerText = formatTime(milliseconds);
   lapTime = 0;
-  lapTimeDiv.innerText = formatTime(lapTime);
 
+  time.innerHTML = formatTime(milliseconds);
   lapsArray = [];
+  lapNumber = 1;
   lapTable.innerText = "";
   resetButton.innerText = "Lap";
-  lapTimeDiv.innerText = "";
   slowestLap = -1;
   fastestLap = Infinity;
 };
@@ -40,29 +36,48 @@ const padNumber = (time) => {
   return time.toString().padStart(2, "0");
 };
 
-//increment function
-
 const stopwatch = () => {
   time.innerText = formatTime(milliseconds);
-  const lapNumber = lapsArray.length;
-  lapTimeDiv.innerText = ` Lap ${lapNumber + 1}: ${formatTime(lapTime)}`;
 
   milliseconds++;
   lapTime++;
 };
 
+//execute function when start button is pressed.
+const startTime = () => {
+  if (watchStatus === "off" && milliseconds === 0) {
+    myInterval = window.setInterval(stopwatch, 10);
+    watchStatus = "on";
+
+    if (lapNumber === 1) {
+      createRow();
+    }
+
+    resetButton.innerText = "Lap"; //add lap button classlist
+    startButton.innerText = "Stop"; //add stop class
+  } else if (watchStatus === "off" && milliseconds > 0) {
+    //window.clearInterval(stopwatch);
+    watchStatus = "on";
+
+    myInterval = window.setInterval(stopwatch, 10);
+    resetButton.innerText = "Lap"; //add lap button classlist
+    startButton.innerText = "Stop"; //add stop class // add start class
+  } else if (watchStatus === "on") {
+    //window.clearInterval(stopwatch);
+    watchStatus = "off";
+    resetButton.innerText = "Reset"; //add reset class
+    startButton.innerText = "Start"; // add start class
+    clearInterval(myInterval);
+  }
+};
+
 const calculateLap = () => {
   //add laptime to div
   lapsArray.push(lapTime);
-  const lapNumber = lapsArray.length;
-
+  lapNumber = lapsArray.length;
 
   if (lapsArray.length === 2) {
-    const row = lapTable.insertRow(0);
-    const firstCell = row.insertCell(0);
-    const secondCell = row.insertCell(1);
-    firstCell.innerHTML = `Lap ${lapNumber}:`;
-    secondCell.innerHTML = `${formatTime(lapTime)}`
+    createRow();
 
     if (lapsArray[0] > lapsArray[1]) {
       tableRows[0].classList.add("fastest-lap");
@@ -81,55 +96,22 @@ const calculateLap = () => {
     if (lapTime > slowestLap && lapsArray.length > 2) {
       removePreviousSlowestLap();
       slowestLap = lapTime;
-      const row = lapTable.insertRow(0);
-      const firstCell = row.insertCell(0);
-      const secondCell = row.insertCell(1);
-      row.classList.add('slowest-lap')
-      firstCell.innerHTML = `Lap ${lapNumber}:`;
-      secondCell.innerHTML = `${formatTime(lapTime)}`
 
-     
+      createRow();
+
+      tableRows[0].classList.add("slowest-lap");
     } else if (lapTime < fastestLap && lapsArray.length > 2) {
-
       removePreviousFastestLap();
       fastestLap = lapTime;
-      const row = lapTable.insertRow(0);
-      const firstCell = row.insertCell(0);
-      const secondCell = row.insertCell(1);
-      row.classList.add('fastest-lap')
-      firstCell.innerHTML = `Lap ${lapNumber}:`;
-      secondCell.innerHTML = `${formatTime(lapTime)}`
-
-     
+      createRow();
+      tableRows[0].classList.add("fastest-lap");
     } else {
-
-      const row = lapTable.insertRow(0);
-      const firstCell = row.insertCell(0);
-      const secondCell = row.insertCell(1);
-      firstCell.innerHTML = `Lap ${lapNumber}:`;
-      secondCell.innerHTML = `${formatTime(lapTime)}`
-      
+      lapNumber = lapsArray.length;
+      createRow();
     }
   }
 
   lapTime = 0;
-};
-
-//execute function when start button is pressed.
-const startTime = () => {
-  if (watchStatus === "off") {
-    myInterval = window.setInterval(stopwatch, 10);
-    watchStatus = "on";
-
-    resetButton.innerText = "Lap"; //use inner text
-    startButton.innerText = "Stop";
-  } else if (watchStatus === "on") {
-    //window.clearInterval(stopwatch);
-    watchStatus = "off";
-    resetButton.innerText = "Reset";
-    startButton.innerText = "Start";
-    clearInterval(myInterval);
-  }
 };
 
 document.getElementById("start").addEventListener("click", startTime);
@@ -137,9 +119,10 @@ document.getElementById("start").addEventListener("click", startTime);
 //when reset is pressed, reset the timer to the default value
 const resetTimeLapToggle = () => {
   if (resetButton.innerText === "Reset") {
-    //rethink this
+    //add initial classes
     resetTime();
   } else if (resetButton.innerText === "Lap" && milliseconds > 0) {
+    //add classes for running timer
     calculateLap(milliseconds);
   }
 };
@@ -175,4 +158,12 @@ const removePreviousSlowestLap = () => {
 const removePreviousFastestLap = () => {
   let fastestLaps = document.getElementsByClassName("fastest-lap");
   fastestLaps[0].classList.remove("fastest-lap");
+};
+
+const createRow = () => {
+  const row = lapTable.insertRow(0);
+  const firstCell = row.insertCell(0);
+  const secondCell = row.insertCell(1);
+  firstCell.innerHTML = `Lap ${lapNumber}:`;
+  secondCell.innerHTML = formatTime(lapTime);
 };

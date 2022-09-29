@@ -34,11 +34,11 @@
 }
 
 .fastest-lap {
-  color: green;
+  color: var(--start-btn-text-color)
 }
 
 .slowest-lap {
-  color: red;
+  color: var(--stop-btn-text-color)
 }
 
 .lap-table {
@@ -88,4 +88,8 @@ button {
   outline-offset: -5px;
   border-radius: 50%;
   border: none;
+}
+
+.running-timer{
+color: aliceblue;
 }

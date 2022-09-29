@@ -3,7 +3,7 @@ const startButton = document.getElementById("start");
 const resetButton = document.getElementById("reset");
 const lapTable = document.getElementById("laps-table");
 const tableRows = document.getElementsByTagName("table")[0].rows;
-const runningTimer = document.getElementById("running-timer");
+let runningTimer = document.getElementById("running-timer"); //want this to be a let so that the value of running timer can be reassigned.
 
 let milliseconds = 0;
 let watchStatus = "off"; //can have on and off status.
@@ -13,6 +13,7 @@ let finalTime = 0;
 let fastestLapIndex = 0;
 let slowestLapIndex = 0;
 let lapNumber = lapsArray.length + 1;
+let runningLapTime = 0;
 
 let slowestLap = -1;
 let fastestLap = Infinity;
@@ -29,7 +30,13 @@ const resetTime = () => {
   lapTable.innerText = "";
   resetButton.innerText = "Lap";
   slowestLap = -1;
-  fastestLap = Infinity;
+  fastestLap = Infinity; 
+
+  //create new row 
+  const initialRow = lapTable.insertRow(0); 
+  initialRow.setAttribute('id','running-timer')
+  runningTimer = initialRow;
+  console.log(initialRow)
 };
 
 const padNumber = (time) => {
@@ -38,9 +45,12 @@ const padNumber = (time) => {
 
 const stopwatch = () => {
   time.innerText = formatTime(milliseconds);
-
   milliseconds++;
   lapTime++;
+
+runningLapTime = formatTime(lapTime); 
+runningTimer.innerText = `Lap ${lapsArray.length + 1}: ${runningLapTime}`;
+
 };
 
 //execute function when start button is pressed.
@@ -50,7 +60,8 @@ const startTime = () => {
     watchStatus = "on";
 
     if (lapNumber === 1) {
-      createRow();
+//createRow();
+      
     }
 
     resetButton.innerText = "Lap"; //add lap button classlist
@@ -80,14 +91,14 @@ const calculateLap = () => {
     createRow();
 
     if (lapsArray[0] > lapsArray[1]) {
-      tableRows[0].classList.add("fastest-lap");
-      tableRows[1].classList.add("slowest-lap");
+      tableRows[1].classList.add("fastest-lap");
+      tableRows[2].classList.add("slowest-lap");
 
       slowestLap = lapsArray[0];
       fastestLap = lapsArray[1];
     } else {
-      tableRows[0].classList.add("slowest-lap");
-      tableRows[1].classList.add("fastest-lap");
+      tableRows[1].classList.add("slowest-lap");
+      tableRows[2].classList.add("fastest-lap");
 
       slowestLap = lapsArray[1];
       fastestLap = lapsArray[0];
@@ -99,15 +110,16 @@ const calculateLap = () => {
 
       createRow();
 
-      tableRows[0].classList.add("slowest-lap");
+      tableRows[1].classList.add("slowest-lap");
     } else if (lapTime < fastestLap && lapsArray.length > 2) {
       removePreviousFastestLap();
       fastestLap = lapTime;
       createRow();
-      tableRows[0].classList.add("fastest-lap");
+      tableRows[1].classList.add("fastest-lap");
     } else {
       lapNumber = lapsArray.length;
-      createRow();
+      createRow(); 
+
     }
   }
 
@@ -157,13 +169,13 @@ const removePreviousSlowestLap = () => {
 
 const removePreviousFastestLap = () => {
   let fastestLaps = document.getElementsByClassName("fastest-lap");
-  fastestLaps[0].classList.remove("fastest-lap");
+    fastestLaps[0].classList.remove("fastest-lap");
 };
 
 const createRow = () => {
-  const row = lapTable.insertRow(0);
+  const row = lapTable.insertRow(1);
   const firstCell = row.insertCell(0);
   const secondCell = row.insertCell(1);
-  firstCell.innerHTML = `Lap ${lapNumber}:`;
+ firstCell.innerHTML = `Lap ${lapNumber}:`;
   secondCell.innerHTML = formatTime(lapTime);
 };

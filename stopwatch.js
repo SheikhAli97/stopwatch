@@ -1,9 +1,12 @@
 const time = document.getElementById("timer");
 const startButton = document.getElementById("start");
 const resetButton = document.getElementById("reset");
+
 const lapTable = document.getElementById("laps-table");
 const tableRows = document.getElementsByTagName("table")[0].rows;
-let runningTimer = document.getElementById("running-timer"); //want this to be a let so that the value of running timer can be reassigned.
+let runningTimer = document.getElementById("running-timer"); 
+
+//want this to be a let so that the value of running timer can be reassigned.
 
 let milliseconds = 0;
 let watchStatus = "off"; //can have on and off status.
@@ -34,10 +37,14 @@ const resetTime = () => {
 
   //create new row 
   const initialRow = lapTable.insertRow(0); 
-  initialRow.setAttribute('id','running-timer')
+  initialRow.setAttribute('id','running-timer');
+  initialRow.setAttribute('class','initial-row');
   runningTimer = initialRow;
-  console.log(initialRow)
+ 
+  
 };
+
+
 
 const padNumber = (time) => {
   return time.toString().padStart(2, "0");
@@ -51,6 +58,7 @@ const stopwatch = () => {
 runningLapTime = formatTime(lapTime); 
 runningTimer.innerText = `Lap ${lapsArray.length + 1}: ${runningLapTime}`;
 
+
 };
 
 //execute function when start button is pressed.
@@ -59,13 +67,15 @@ const startTime = () => {
     myInterval = window.setInterval(stopwatch, 10);
     watchStatus = "on";
 
-    if (lapNumber === 1) {
-//createRow();
-      
-    }
+    runningTimer.classList.add('initial-row')
+    
+
+  
 
     resetButton.innerText = "Lap"; //add lap button classlist
     startButton.innerText = "Stop"; //add stop class
+    resetButton.classList.replace('initial-lap', 'lap-button')
+    startButton.classList.replace('start-button','stop-button')
   } else if (watchStatus === "off" && milliseconds > 0) {
     //window.clearInterval(stopwatch);
     watchStatus = "on";
@@ -73,11 +83,13 @@ const startTime = () => {
     myInterval = window.setInterval(stopwatch, 10);
     resetButton.innerText = "Lap"; //add lap button classlist
     startButton.innerText = "Stop"; //add stop class // add start class
+    startButton.classList.replace('start-button','stop-button')
   } else if (watchStatus === "on") {
     //window.clearInterval(stopwatch);
     watchStatus = "off";
     resetButton.innerText = "Reset"; //add reset class
     startButton.innerText = "Start"; // add start class
+    startButton.classList.replace('stop-button','start-button')
     clearInterval(myInterval);
   }
 };
@@ -140,6 +152,12 @@ const resetTimeLapToggle = () => {
 };
 resetButton.addEventListener("click", resetTimeLapToggle);
 
+
+
+
+
+
+
 const formatTime = (time) => {
   let formattedMilliseconds = 0;
   let formattedSeconds = 0;
@@ -176,6 +194,11 @@ const createRow = () => {
   const row = lapTable.insertRow(1);
   const firstCell = row.insertCell(0);
   const secondCell = row.insertCell(1);
- firstCell.innerHTML = `Lap ${lapNumber}:`;
-  secondCell.innerHTML = formatTime(lapTime);
+  firstCell.classList.add('first-cell')
+  secondCell.classList.add('second-cell')
+ firstCell.innerText = `Lap ${lapNumber}:`;
+  secondCell.innerText = formatTime(lapTime);
 };
+
+
+

@@ -41,33 +41,29 @@
   color: var(--stop-btn-text-color)
 }
 
-.lap-table {
-  border-top: #fff;
-  color: white;
-}
+
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin: 0 10px;
+  margin: 0 20px ;
 }
 
-.current-lap-time {
-  color: aliceblue;
-}
+
 
 .main-timer {
   display: flex;
   justify-content: center;
-  padding: 25%;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-    Helvetica, Arial, "Lucida Grande", sans-serif;
+  height: 50%; 
+  align-items: center;
+font-variant-numeric: tabular-nums;
   font-weight: 100;
   font-size: 2cm;
   color: aliceblue;
+  user-select: none;
 }
 
 .lap-button {
-  background-color: var(--lap-btn-bg-color);
+  background-color: var(--reset-btn-bg-color);
   color: var(--reset-btn-text-color);
 }
 
@@ -80,16 +76,57 @@
   background-color: var(--stop-btn-bg-color);
   color: var(--stop-btn-text-color);
 }
+
+.initial-lap{
+  background-color:#49494c;
+  color: var(--reset-btn-text-color);
+}
 button {
   display: block;
   height: 70px;
   width: 70px;
   outline: 1px solid black;
-  outline-offset: -5px;
+  outline-offset: -3px;
   border-radius: 50%;
   border: none;
+  cursor: pointer;
+  user-select: none;
 }
 
-.running-timer{
-color: aliceblue;
+tr {
+  display: flex;
+  margin-top: 10px;
+  border-bottom: .5px solid var(--reset-btn-bg-color);
+  color: #fff;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center; 
+  height: 30px;
+  font-size: 1rem;
+  font-weight: 400;
+  
+} 
+
+.laps-table{
+  display: flex;
+  width: 100%;
+  margin-top: 2rem;
 }
+
+table:first-child{
+
+  border-top:  .5px solid var(--reset-btn-bg-color); 
+}
+
+
+tbody {
+  width: 100%; 
+  padding: 0 1rem;
+
+}
+
+
+
+
+
+
